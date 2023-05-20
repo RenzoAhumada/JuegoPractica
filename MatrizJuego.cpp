@@ -1,41 +1,64 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
+#include <string>
 using namespace std;
 
-int fillCharacters(int v[10][10]);
-int viewCharacter(int v[10][10]);
+std::string characters[3][3] = {
+
+    {"mario","luigi","peach"},
+    {"bowser","Wario","Waluigi"},
+    {"Pikachu", "Charmander", "Bulbalsur"}
+
+};
+std::string viewerCharacter(int files, int columns){
+    if (files>=0 && files<3 && columns>=0 && columns<3)
+    {
+    return characters[files][columns];
+    }else{
+        cout<<"¡¡¡Tenias que elegir un personaje y no elegiste nada!!!";
+    }
+
+
+};
+
+void viewCharacter();
+int playGame(int files, int columns);
+
 
 int main() {
-    srand(time(NULL));
-    int characters[10][10];
-    fillCharacters(characters);
+    int files=0, columns=0;
+    viewCharacter();
+    playGame(files, columns);
 }
 
-int fillCharacters(int v[10][10]) {
-    int files = 10; // Número de filas
-    int columns = 10; // Número de columnas
-    
-    for (int i = 0; i < files; i++) {
-        for (int j = 0; j < columns; j++) {
-            v[i][j] = rand() % 2;
+
+void viewCharacter() {
+
+    cout<<"Los personajes disponibles son";
+    for (int i = 0; i < 3; ++i)
+    {
+        for (int j = 0; j < 3; ++j)
+        {
+            std::cout << "[" << i << "][" << j << "]: " << characters[i][j] << std::endl;
         }
     }
-    
-    viewCharacter(v);
-    return 0;
+
 }
 
-int viewCharacter(int v[10][10]) {
-    int files = 10; // Número de filas
-    int columns = 10; // Número de columnas
-    
-    for (int i = 0; i < files; i++) {
-        for (int j = 0; j < columns; j++) {
-            cout << v[i][j];
-        }
+int playGame(int files, int columns){
+    int option=1;
+    cout<<"Su personaje usa gorra roja??";
+        cin>>option;
+    if (option=0)
+    {
+        files=0;
+        columns=0;
     }
-    
-    return 0;
+    std::string selecCharacter = viewerCharacter(files, columns);
+
+    std:: cout<<"Su personaje es: "<< selecCharacter;
+
+return 0;
 }
 
