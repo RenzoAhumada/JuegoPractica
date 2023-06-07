@@ -3,38 +3,39 @@
 #include <iostream>
 #include <string>
 #include <cctype>
-
 using namespace std;
-
-
-///Se crea la matriz con los personajes predefinidos
+///Matriz para personajes a elegir
 string characters[4][3] = {
     {"Mario", "Luigi", "Peach"},
     {"Bowser", "Wario", "Waluigi"},
     {"Pikachu", "Charmander", "Bulbasaur"},
     {"Donkey Kong", "Diddy Kong", "Dixie Kong"}
 };
-///Estructura para poder crear jugadores y poder darles los puntos
-struct PLAYERS
+///Estructura de los jugadores
+struct Player
 {
     char name[20];
     int points;
 };
-
+///Desde esta funcion llamaremos al personaje para adivinar
 string viewerCharacter(int row, int column) {
-    // Lógica para mostrar el personaje seleccionado por el jugador
     if (row >= 0 && row < 4 && column >= 0 && column < 3) {
         return characters[row][column];
     } else {
-        // En caso de que el jugador no seleccione o proporcione coordenadas incorrectas
         return "Personaje no válido";
     }
 }
+///Firmas
 void worldMario(int& option);
 void worldDonkeyKong(int& option);
 void worldPokemon(int& option);
+void playForGoodChararctersMario(int& option);
+void playForBadCharactersMario(int& option);
+void rulersGame();
+void menu();
+
+///Funcion donde mostraremos los personajes disponibles que nos quedan
 void viewCharacter() {
-    // Esta función muestra por pantalla la matriz de personajes
     cout << "Los personajes disponibles son:" << endl;
     for (int i = 0; i < 4; ++i) {
         for (int j = 0; j < 3; ++j) {
@@ -42,232 +43,312 @@ void viewCharacter() {
         }
     }
 }
-void posibleCharacters(){
-///Con esta funcion se mostraran segun las opciones los personajes posibles que pueden ser
-
-
-}
+///Logica del juego donde tira un random para la pregunta mas randomizada
 void playGame() {
-///Desde aqui partimos en el juego teniendo 3 tipos de funciones segun la respuesta del jugador
     int option;
+    cout<<"Para afirmar las preguntas presione 'S' y para negarla presione 'N'. ";
     srand(time(0));
     option = (rand() % 3) + 1;
-
-    while (option!=0){
-    switch (option) {
-        case 1:
-            worldMario(option);
-            ///Si el caso de la funcion 1 no es el personaje a option se le suma ++ para que comience parte hacia el siguiente caso
-            break;
-        case 2:
-            worldDonkeyKong(option);
-            break;
-        case 3:
-            worldPokemon(option);
-            break;  
-    }
+    while (option != 0) {
+        switch (option) {
+            case 1:
+                worldMario(option);
+                break;
+            case 2:
+                worldDonkeyKong(option);
+                break;
+            case 3:
+                worldPokemon(option);
+                break;
+        }
     }
 }
-
+///Logica funcion para mundo de donkeykong
 void worldDonkeyKong(int& option) {
-    ///Funcion del mundo de donkey kong
-    char yesOrNo;
-    cout << "¿Su personaje es del mundo de Donkey Kong? ";
+  char yesOrNo;
+    int row, column, optionTwo;
+    cout << "¿Su personaje es del mundo de donkeykong? ";
     cin >> yesOrNo;
 
     if (toupper(yesOrNo) == 'S') {
-        // Aquí deberías agregar la lógica para el mundo de Donkey Kong si la respuesta es "Sí"
-        option = 0;
-
+        cout<<"Los posibles personajes a elegir son: Donkey Kong, Diddy Kong, Dixie Kong"<<endl;
+        srand(time(0));
+        optionTwo = (rand() % 3) + 1;
+        switch (optionTwo) {
+            case 1:
+                cout << "¿Su personaje es el mas fuerte de los 3? ";
+                cin >> yesOrNo;
+                if (toupper(yesOrNo) == 'S') {
+                    row = 3;
+                    column = 0;
+                    string selectedCharacter = viewerCharacter(row, column);
+                    cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                    option = 0;
+                } else if (toupper(yesOrNo) == 'N') {
+                    optionTwo++;
+                }
+                break;
+            case 2:
+                cout << "¿Su personaje es el hermano pequeño que lleva una gorra? ";
+                cin >> yesOrNo;
+                if (toupper(yesOrNo) == 'S') {
+                    row = 3;
+                    column = 1;
+                    string selectedCharacter = viewerCharacter(row, column);
+                    cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                    option = 0;
+                } else if (toupper(yesOrNo) == 'N') {
+                    optionTwo++;
+                }
+                break;
+            case 3:
+                cout << "¿Su personaje es la hermana de los gorilas? ";
+                cin >> yesOrNo;
+                if (toupper(yesOrNo) == 'S') {
+                    row = 3;
+                    column = 2;
+                    string selectedCharacter = viewerCharacter(row, column);
+                    cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                    option = 0;
+                } else if (toupper(yesOrNo) == 'N') {
+                    optionTwo=1;
+                }
+                break;
+        }
     } else if (toupper(yesOrNo) == 'N') {
-        option++;  // Incrementa option en 1 si la respuesta es "No"
-
-    } else {
-        cout << "Opción no válida";
+        option++;
+    }else{
+        cout<<"Papi ¿hablo en chino? te dije que S para afirmar o N para negar no es dificil";
+        option=2;
     }
 }
 
-void worldMario(int& option) {
-    ///Funcion para mundo mario
+///funcion para mundo mario
+void playForGoodChararctersMario(int& option, int optionTwo){
+    int row, column;
     char yesOrNo;
+    cout << "¿Su personaje es de los buenos? ";
+                cin >> yesOrNo;
+                if (toupper(yesOrNo) == 'S') {
+                    cout<<"Los posibles personajes a elegir son: Mario, Luigi, Peach";
+                    cout << "¿Su personaje lleva una gorra roja? ";
+                    cin >> yesOrNo;
+                    if (toupper(yesOrNo) == 'S') {
+                        row = 0;
+                        column = 0;
+                        string selectedCharacter = viewerCharacter(row, column);
+                        cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                        option = 0;
+                    } else if (toupper(yesOrNo) == 'N') {
+                        cout << "¿Tu personaje es el hermano menor? ";
+                        cin >> yesOrNo;
+                        if (toupper(yesOrNo) == 'S') {
+                            row = 0;
+                            column = 1;
+                            string selectedCharacter = viewerCharacter(row, column);
+                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                            option = 0;
+                        } else {
+                            row = 0;
+                            column = 2;
+                            string selectedCharacter = viewerCharacter(row, column);
+                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                            option = 0;
+                        }
+                    }
+                } else if (toupper(yesOrNo) == 'N') {
+                    optionTwo = 2;
+                }
+}
+///Funcion para mundo mario
+void playForBadCharactersMario(int& option, int optionTwo){
+    int row, column;
+    char yesOrNo;
+     cout << "¿Su personaje es de los villanos? ";
+                cin >> yesOrNo;
+                if (toupper(yesOrNo) == 'S') {
+                    cout<<"Los posibles personajes a elegir son: Bowser, Wario, Waluigi"<<endl;
+                    cout << "¿Su personaje es la parte contraria de los hermanos bros? ";
+                    cin >> yesOrNo;
+                    if (toupper(yesOrNo) == 'S') {
+                        cout << "¿Su personaje es la parte mala del personaje principal de la historia? ";
+                        cin >> yesOrNo;
+                        if (toupper(yesOrNo) == 'S') {
+                            row = 1;
+                            column = 1;
+                            string selectedCharacter = viewerCharacter(row, column);
+                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                            option = 0;
+                        } else if (toupper(yesOrNo) == 'N') {
+                            row = 2;
+                            column = 2;
+                            string selectedCharacter = viewerCharacter(row, column);
+                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                            option = 0;
+                        } else {
+                            cout << "Volvamos a empezar ya que no elegiste ningún personaje." << endl;
+                            option = (rand() % 3) + 1;
+                        }
+                    } else if (toupper(yesOrNo) == 'N') {
+                        cout << "¿Su personaje aparece en el primer juego como villano principal? ";
+                        cin >> yesOrNo;
+                        if (toupper(yesOrNo) == 'S') {
+                            row = 0;
+                            column = 1;
+                            string selectedCharacter = viewerCharacter(row, column);
+                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                            option = 0;
+                        } else {
+                            cout << "Volvamos a empezar ya que no elegiste ningún personaje." << endl;
+                            option = (rand() % 3) + 1;
+                        } 
+        }
+    }else if(toupper(yesOrNo)=='N'){
+        optionTwo=1;
+    } 
+}
+///Funcion de mundo mario donde llamaremos un random para ver si es un personaje bueno o malo
+void worldMario(int& option) {
+    char yesOrNo;
+    int optionTwo;
     cout << "¿Su personaje es del mundo de Mario? ";
     cin >> yesOrNo;
 
     if (toupper(yesOrNo) == 'S') {
-        option = (rand() % 2) + 1;
-        ///igual que la funcion de playgame se da un random para ver si elije 1 o 2 para el caso correspondiente
-        switch (option) {
+        cout<<"Los posibles personajes a elegir son: Mario, Luigi, Peach, Bowser, Wario, Waluigi"<<endl;
+        optionTwo = (rand() % 2) + 1;
+        switch (optionTwo) {
             case 1:
-                cout << "¿Su personaje es de los buenos? ";
-                cin >> yesOrNo;
-                if (toupper(yesOrNo) == 'S') {
-                    cout << "¿Su personaje lleva una gorra roja? ";
-                    cin >> yesOrNo;
-                    if (toupper(yesOrNo) == 'S') {
-                        int row = 0, column = 0;
-                        string selectedCharacter = viewerCharacter(row, column);
-                        cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                        option=0;
-                    }else if(yesOrNo='N'){
-                        cout<<"¿Tu personaje es el hermano menor?";
-                        cin>>yesOrNo;
-                        if(toupper(yesOrNo='S')){
-                            int row = 0, column = 1;
-                            string selectedCharacter = viewerCharacter(row, column);
-                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                            option=0;
-                        }else{
-                            row=0, column=2;
-                            string selectedCharacter = viewerCharacter(row, column);
-                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                            option=0;
-                        }
-                    }
-                }else if(toupper(yesOrNo='N')){
-                    option++;
-                } 
-                
+                playForGoodChararctersMario(option, optionTwo);
                 break;
             case 2:
-                cout << "¿Su personaje es de los villanos? ";
-                cin >> yesOrNo;
-                if (toupper(yesOrNo) == 'S') {
-                    cout << "¿Su personaje es la parte contraria de los hermanos bros? ";
-                    cin >> yesOrNo;
-                    if(toupper(yesOrNo='S')){
-                        cout<<"¿Su personaje es la parte mala del personaje principal de la historia?";
-                        cin>>yesOrNo;
-                        if (yesOrNo='S')
-                        {
-                            row=1, column=1;
-                            string selectedCharacter = viewerCharacter(row, column);
-                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                            option=0;
-                        }else if (yesOrNo='N')
-                        {
-                            row=2, column=2;
-                            string selectedCharacter = viewerCharacter(row, column);
-                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                            option=0;
-                        }else{
-                            cout<<"Volvamos a empezar ya que se ve que no elegiste ningun personaje";
-                            option =(rand()%3+1);
-                        }
-                    }else if(toupper(yesOrNo='N')){
-                        cout<<"¿Su personaje aparece en el primer juego como villano principal?";
-                        cin>>yesOrNo;
-                        if (toupper(yesOrNo='S'))
-                        {
-                            row=0, column=1;
-                            string selectedCharacter = viewerCharacter(row, column);
-                            cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                            option=0;
-                        }else{
-                            cout<<"Volvamos a empezar ya que se ve que no elegiste ningun personaje";
-                            option =(rand()%3+1);
-                        }
-                    }
-                    }else if(toupper(yesOrNo='N')){
-                        option++;
-                    }
+                playForBadCharactersMario(option, optionTwo);
                 break;
-           
-    } else if (toupper(yesOrNo) == 'N') {
+        }
+    }else if(toupper(yesOrNo)=='N'){
         option++;
-    } else {
-        cout << "Opción no válida" << endl;
+    }else{
+        cout<<"Papi ¿hablo en chino? te dije que S para afirmar o N para negar no es dificil";
+        option=1;
     }
-}}
-
+}
+///Funcion mundo pokemon
 void worldPokemon(int& option) {
-    ///funcion si el personaje es de pokemon
-    char yesOrNo;
+    char yesOrNo, afirmation;
+    int row, column, optionTwo;
     cout << "¿Su personaje es del mundo de Pokémon? ";
     cin >> yesOrNo;
 
     if (toupper(yesOrNo) == 'S') {
+        cout<<"Los posibles personajes a elegir son: Pikachu, Charmander, Bulbasaur"<<endl;
         srand(time(0));
-        ///misma forma de optimizar el juego se utiliza un random para darle mas aleatoridad al juego
-        option = (rand() % 3) + 1;
-        switch(option){
-        case 1:
-            cout<<"¿Su personaje es de tipo electrico?"
-            cin>>yesOrNo;
-            if (toupper(yesOrNo='S'))
-            {
-                row=2, column=0;
-                string selectedCharacter = viewerCharacter(row, column);
-                cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                option=0;
-            }else if(toupper(yesOrNo='N')){
-                option++;
-            }else{
-                option++;
-            }
-            break;
-        case 2:
-            cout<<"¿Su peresonaje es de tipo fuego?"
-            cin>>yesOrNo;
-            if (toupper(yesOrNo='S'))
-            {
-                row=2, column=1;
-                string selectedCharacter = viewerCharacter(row, column);
-                cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                option=0;
-            }else if(toupper(yesOrNo='N')){
-                option++;
-            }else{
-                option++;
-            }
-            break;
-        case 3:
-            cout<<"¿Su personaje es de tipo hierba?"
-            cin>>yesOrNo;
-            if (toupper(yesOrNo='S'))
-            {
-                row=2, column=2;
-                string selectedCharacter = viewerCharacter(row, column);
-                cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
-                option=0;
-            }else if(toupper(yesOrNo='N')){
-                option++;
-            }else{
-                option++;
-            }
-            break;
+        optionTwo = (rand() % 3) + 1;
+        switch (optionTwo) {
+            case 1:
+                cout << "¿Su personaje es de tipo eléctrico? ";
+                cin >> afirmation;
+                if (toupper(afirmation) == 'S') {
+                    row = 2;
+                    column = 0;
+                    string selectedCharacter = viewerCharacter(row, column);
+                    cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                    option = 0;
+                } else if (toupper(afirmation) == 'N') {
+                    optionTwo++;
+                }
+                break;
+            case 2:
+                cout << "¿Su personaje es de tipo fuego? ";
+                cin >> afirmation;
+                if (toupper(afirmation) == 'S') {
+                    row = 2;
+                    column = 1;
+                    string selectedCharacter = viewerCharacter(row, column);
+                    cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                    option = 0;
+                } else if (toupper(afirmation) == 'N') {
+                    optionTwo++;
+                }
+                break;
+            case 3:
+                cout << "¿Su personaje es de tipo planta? ";
+                cin >> afirmation;
+                if (toupper(afirmation) == 'S') {
+                    row = 2;
+                    column = 2;
+                    string selectedCharacter = viewerCharacter(row, column);
+                    cout << "¡Adiviné! Tu personaje es " << selectedCharacter << "." << endl;
+                    option = 0;
+                } else if (toupper(afirmation) == 'N') {
+                    optionTwo=1;
+                }
+                break;
         }
-
-
-
     } else if (toupper(yesOrNo) == 'N') {
-        option = 1;  // Incrementa option en 1 si la respuesta es "No"
+        option=1;
+    }else{
+        cout<<"Papi ¿hablo en chino? te dije que S para afirmar o N para negar no es dificil";
+        option=3;
+    }
+}
+///Desde esta funcion creamos los jugadores con nombres y la cantidad de jugadores
+void createPlayers(Player players[], int numPlayers) {
+    for (int i = 0; i < numPlayers; ++i) {
+        cout << "Ingrese el nombre del jugador " << (i + 1) << ": ";
+        cin.ignore();
+        cin.getline(players[i].name, 20);
+        players[i].points = 0;
+    }
+}
+void rulersGame() {
+    cout << "Mira papa las reglas super sencillas" << endl;
+    cout << "Para Afirmas presionas la S, esto hace que la pregunta vaya a un codigo de linea siguiente para seguir el juego" << endl;
+    cout << "Para negar con la N, eso quiere decir que si queres presionar cualquier otra tecla no funciona" << endl;
+    cout << "Enserio no presiones otra tecla, es muy simple el juego" << endl;
+    cout << "Cualquier cosa que no lo entiendas puedes volver a mirar las reglas aquí" << endl;
+}
 
-    } else {
-        cout << "Opción no válida";
-    }}
-
-void createPlayers(int *n, struct PLAYERS v[]) {
-    ///Desde aqui se crea la estrucutura de los jugadores
-    cout << "Ingrese la cantidad de jugadores: " << endl;
-    cin >> *n;
-
-    for (int i = 0; i < *n; ++i) {
-        cout << "Ingrese el nombre del jugador " << i + 1 << ": ";
-        cin >> v[i].name;
-        v[i].points = 0;
+void menu() {
+    int option;
+    cout << "Bienvenido al juego de adivina el personaje." << endl;
+    cout << "Para empezar ingrese 1" << endl;
+    cout << "Para ver las reglas presione 2" << endl;
+    cout << "Para terminar el juego presione 0" << endl;
+    
+    while (true) {
+        cin >> option;
+        
+        switch (option) {
+            case 1: {
+                int numPlayers;
+                cout << "Ingrese la cantidad de jugadores: ";
+                cin >> numPlayers;
+                Player players[numPlayers];
+                createPlayers(players, numPlayers);
+                playGame();
+                break;
+            }
+            case 2: {
+                rulersGame();
+                break;
+            }
+            case 0: {
+                cout << "Nos vimos padre" << endl;
+                return;
+            }
+            default: {
+                cout << "Amigo, es 1, 2 o 0, no presiones otra cosa que no funciona y puedes romper el juego" << endl;
+                break;
+            }
+        }
+        
+        cout << "Para empezar ingrese 1" << endl;
+        cout << "Para ver las reglas presione 2" << endl;
+        cout << "Para terminar el juego presione 0" << endl;
     }
 }
 
 int main() {
-    ///Main limpio que mostrar el personaje y enviaran los datos para el juego
-    srand(time(NULL));
-
-    int row, column, n;
-    struct PLAYERS player[10];
-    createPlayers(&n, player);
-    viewCharacter();
-    playGame();
-    string selectedCharacter = viewerCharacter(row, column);
-    cout << "Tu personaje es: " << selectedCharacter << endl;
+    menu();
     return 0;
 }
